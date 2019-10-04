@@ -1,0 +1,39 @@
+{
+  "name": "@ravshansbox/mini-app",
+  "version": "0.0.1",
+  "description": "Mini app library",
+  "main": "dist/index.js",
+  "scripts": {
+    "prepublishOnly": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ravshansbox/mini-app.git"
+  },
+  "keywords": [
+    "mini",
+    "app"
+  ],
+  "author": "Ravshan Samandarov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ravshansbox/mini-app/issues"
+  },
+  "homepage": "https://github.com/ravshansbox/mini-app#readme",
+  "devDependencies": {
+    "@types/jest": "~24.0.0",
+    "@types/node": "~12.7.0",
+    "jest": "~24.9.0",
+    "ts-jest": "~24.1.0",
+    "tslint": "~5.20.0",
+    "typescript": "~3.6.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}
