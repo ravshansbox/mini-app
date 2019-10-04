@@ -1,16 +1,21 @@
 import { IncomingMessage, ServerResponse } from 'http';
 
-export type IMiddlewareMatch = (request: IncomingMessage) => boolean;
+export interface IMiddlewareContext {
+  previousMatch: boolean;
+}
 
 export type IMiddlewareHandler = (
   request: IncomingMessage,
   response: ServerResponse,
+  context: IMiddlewareContext,
   next?: () => void,
 ) => void;
 
+export type IMiddlewareMatch = (request: IncomingMessage) => boolean;
+
 export interface IMiddleware {
-  match: IMiddlewareMatch;
   handler: IMiddlewareHandler;
+  match: IMiddlewareMatch;
 }
 
 export const appFactory = () => {
@@ -21,11 +26,11 @@ export const appFactory = () => {
   };
 
   const requestListener = (request: IncomingMessage, response: ServerResponse) => {
-    let match = false;
+    const context: IMiddlewareContext = { previousMatch: false };
     const processMiddleware = (index: number) => {
       const middleware = middlewares[index];
       if (!middleware) {
-        if (!match) {
+        if (!context.previousMatch) {
           response.statusCode = 404;
           response.end(`No match for ${request.method}:${request.url}`);
         }
@@ -35,8 +40,8 @@ export const appFactory = () => {
         processMiddleware(index + 1);
         return;
       }
-      match = true;
-      middleware.handler(request, response, () => processMiddleware(index + 1));
+      context.previousMatch = true;
+      middleware.handler(request, response, context, () => processMiddleware(index + 1));
     };
     processMiddleware(0);
   };
