@@ -32,7 +32,7 @@ export const appFactory = () => {
       if (!middleware) {
         if (!context.previousMatch) {
           response.statusCode = 404;
-          response.end(`No match for ${request.method}:${request.url}`);
+          response.end(`No match for ${request.method}:${request.url}\n`);
         }
         return;
       }
