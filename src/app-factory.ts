@@ -41,7 +41,12 @@ export const appFactory = () => {
         return;
       }
       context.previousMatch = true;
-      middleware.handler(request, response, context, () => processMiddleware(index + 1));
+      try {
+        middleware.handler(request, response, context, () => processMiddleware(index + 1));
+      } catch (error) {
+        response.statusCode = 500;
+        response.end(`Something went wrong on ${request.method}:${request.url}\n`);
+      }
     };
     processMiddleware(0);
   };
