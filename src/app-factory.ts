@@ -1,22 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
-
-export interface IMiddlewareContext {
-  previousMatch: boolean;
-}
-
-export type IMiddlewareHandler = (
-  request: IncomingMessage,
-  response: ServerResponse,
-  context: IMiddlewareContext,
-  next?: () => void,
-) => void;
-
-export type IMiddlewareMatch = (request: IncomingMessage) => boolean;
-
-export interface IMiddleware {
-  handler: IMiddlewareHandler;
-  match: IMiddlewareMatch;
-}
+import { IMiddleware, IMiddlewareContext, IMiddlewareHandler, IMiddlewareMatch } from './types';
 
 export const appFactory = () => {
   const middlewares: IMiddleware[] = [];
