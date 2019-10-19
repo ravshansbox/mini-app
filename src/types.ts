@@ -1,4 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
+import { UrlWithParsedQuery } from 'url';
 
 export interface IMap<T = any> {
   [key: string]: T;
@@ -6,6 +7,7 @@ export interface IMap<T = any> {
 
 export interface IMiddlewareContext extends IMap {
   previousMatch: boolean;
+  url: UrlWithParsedQuery;
 }
 
 export type IMiddlewareHandler = (

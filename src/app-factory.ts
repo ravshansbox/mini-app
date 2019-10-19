@@ -1,4 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
+import { parse as urlParse } from 'url';
 import { IMiddleware, IMiddlewareContext, IMiddlewareHandler, IMiddlewareMatch } from './types';
 
 export const appFactory = () => {
@@ -9,7 +10,10 @@ export const appFactory = () => {
   };
 
   const requestListener = (request: IncomingMessage, response: ServerResponse) => {
-    const context: IMiddlewareContext = { previousMatch: false };
+    const context: IMiddlewareContext = {
+      previousMatch: false,
+      url: request.url ? urlParse(request.url, true) : { query: {} },
+    };
     const processMiddleware = (index: number) => {
       const middleware = middlewares[index];
       if (!middleware) {
