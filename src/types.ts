@@ -9,15 +9,15 @@ export interface IMiddlewareContext extends IMap {
 }
 
 export type IMiddlewareHandler = (
-  request?: IncomingMessage,
-  response?: ServerResponse,
-  context?: IMiddlewareContext,
-  next?: () => void,
+  request: IncomingMessage,
+  response: ServerResponse,
+  context: IMiddlewareContext,
+  next: () => void,
 ) => void;
 
 export type IMiddlewareMatch = (
-  request?: IncomingMessage,
-  context?: IMiddlewareContext,
+  request: IncomingMessage,
+  context: IMiddlewareContext,
 ) => boolean;
 
 export interface IMiddleware {
