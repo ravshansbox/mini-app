@@ -19,7 +19,7 @@ export const appFactory = () => {
         }
         return;
       }
-      if (!middleware.match(request)) {
+      if (!middleware.match(request, context)) {
         processMiddleware(index + 1);
         return;
       }
