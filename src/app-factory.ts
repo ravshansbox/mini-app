@@ -1,16 +1,16 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { parse as urlParse } from 'url';
-import { IMiddleware, IMiddlewareContext, IMiddlewareHandler, IMiddlewareMatch } from './types';
+import { IContext, IHandler, IMatch, IMiddleware, INext } from './types';
 
 export const appFactory = () => {
   const middlewares: IMiddleware[] = [];
 
-  const registerMiddleware = (match: IMiddlewareMatch, handler: IMiddlewareHandler) => {
+  const registerMiddleware = (match: IMatch, handler: IHandler) => {
     middlewares.push({ match, handler });
   };
 
   const requestListener = (request: IncomingMessage, response: ServerResponse) => {
-    const context: IMiddlewareContext = {
+    const context: IContext = {
       previousMatch: false,
       url: request.url ? urlParse(request.url, true) : { query: {} },
     };
@@ -28,11 +28,25 @@ export const appFactory = () => {
         return;
       }
       context.previousMatch = true;
-      try {
-        middleware.handler(request, response, context, () => processMiddleware(index + 1));
-      } catch (error) {
+
+      const handleError = (error: Error) => {
+        // tslint:disable-next-line: no-console
+        console.error(error);
         response.statusCode = 500;
         response.end(`Something went wrong on ${request.method}:${request.url}\n`);
+      };
+
+      try {
+        const next: INext = (error) => {
+          if (error) {
+            handleError(error);
+          } else {
+            processMiddleware(index + 1);
+          }
+        };
+        middleware.handler(request, response, context, next);
+      } catch (error) {
+        handleError(error);
       }
     };
     processMiddleware(0);

@@ -5,24 +5,26 @@ export interface IMap<T = any> {
   [key: string]: T;
 }
 
-export interface IMiddlewareContext extends IMap {
+export interface IContext extends IMap {
   previousMatch: boolean;
   url: UrlWithParsedQuery;
 }
 
-export type IMiddlewareHandler = (
+export type INext = (error?: Error) => void;
+
+export type IHandler = (
   request: IncomingMessage,
   response: ServerResponse,
-  context: IMiddlewareContext,
-  next: () => void,
+  context: IContext,
+  next: INext,
 ) => void;
 
-export type IMiddlewareMatch = (
+export type IMatch = (
   request: IncomingMessage,
-  context: IMiddlewareContext,
+  context: IContext,
 ) => boolean;
 
 export interface IMiddleware {
-  handler: IMiddlewareHandler;
-  match: IMiddlewareMatch;
+  handler: IHandler;
+  match: IMatch;
 }
