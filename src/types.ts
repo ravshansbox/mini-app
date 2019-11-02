@@ -12,12 +12,12 @@ export interface IContext extends IMap {
 
 export type INext = (error?: Error) => void;
 
-export type IHandler = (
+export type IHandler<T = void> = (
   request: IncomingMessage,
   response: ServerResponse,
   context: IContext,
   next: INext,
-) => void;
+) => T;
 
 export type IMatch = (
   request: IncomingMessage,
