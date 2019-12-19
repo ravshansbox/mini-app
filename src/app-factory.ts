@@ -1,18 +1,18 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { parse as urlParse } from 'url';
-import { IContext, IHandler, IMatch, IMiddleware, INext } from './types';
+import { parse as urlParse, UrlWithParsedQuery } from 'url';
+import { Context, Handler, Match, Middleware, Next } from './types';
 
 export const appFactory = () => {
-  const middlewares: IMiddleware[] = [];
+  const middlewares: Middleware[] = [];
 
-  const registerMiddleware = (match: IMatch, handler: IHandler) => {
+  const registerMiddleware = (match: Match, handler: Handler) => {
     middlewares.push({ match, handler });
   };
 
   const requestListener = (request: IncomingMessage, response: ServerResponse) => {
-    const context: IContext = {
+    const context: Context = {
       previousMatch: false,
-      url: request.url ? urlParse(request.url, true) : { query: {} },
+      url: request.url ? urlParse(request.url, true) : ({ query: {} } as UrlWithParsedQuery),
     };
     const processMiddleware = (index: number) => {
       const middleware = middlewares[index];
@@ -30,14 +30,13 @@ export const appFactory = () => {
       context.previousMatch = true;
 
       const handleError = (error: Error) => {
-        // tslint:disable-next-line: no-console
         console.error(error);
         response.statusCode = 500;
         response.end(`Something went wrong on ${request.method}:${request.url}\n`);
       };
 
       try {
-        const next: INext = (error) => {
+        const next: Next = error => {
           if (error) {
             handleError(error);
           } else {

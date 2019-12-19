@@ -1,30 +1,27 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { UrlWithParsedQuery } from 'url';
 
-export interface IMap<T = any> {
+export interface Hash<T = any> {
   [key: string]: T;
 }
 
-export interface IContext extends IMap {
+export interface Context extends Hash {
   previousMatch: boolean;
   url: UrlWithParsedQuery;
 }
 
-export type INext = (error?: Error) => void;
+export type Next = (error?: Error) => void;
 
-export type IHandler<T = void> = (
+export type Handler<T = void> = (
   request: IncomingMessage,
   response: ServerResponse,
-  context: IContext,
-  next: INext,
+  context: Context,
+  next: Next,
 ) => T;
 
-export type IMatch = (
-  request: IncomingMessage,
-  context: IContext,
-) => boolean;
+export type Match = (request: IncomingMessage, context: Context) => boolean;
 
-export interface IMiddleware {
-  handler: IHandler;
-  match: IMatch;
+export interface Middleware {
+  handler: Handler;
+  match: Match;
 }
