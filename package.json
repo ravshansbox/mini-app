@@ -23,16 +23,21 @@
   "homepage": "https://github.com/ravshansbox/mini-app#readme",
   "devDependencies": {
     "@types/jest": "~24.0.0",
-    "@types/node": "~12.12.0",
+    "@types/node": "~13.1.0",
     "jest": "~24.9.0",
+    "prettier": "~1.19.0",
     "ts-jest": "~24.2.0",
     "typescript": "~3.7.0"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node"
   },
-  "files": [
-    "dist/**/*"
-  ]
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
 }

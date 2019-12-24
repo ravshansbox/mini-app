@@ -9,10 +9,15 @@ export const appFactory = () => {
     middlewares.push({ match, handler });
   };
 
-  const requestListener = (request: IncomingMessage, response: ServerResponse) => {
+  const requestListener = (
+    request: IncomingMessage,
+    response: ServerResponse,
+  ) => {
     const context: Context = {
       previousMatch: false,
-      url: request.url ? urlParse(request.url, true) : ({ query: {} } as UrlWithParsedQuery),
+      url: request.url
+        ? urlParse(request.url, true)
+        : ({ query: {} } as UrlWithParsedQuery),
     };
     const processMiddleware = (index: number) => {
       const middleware = middlewares[index];
@@ -32,7 +37,9 @@ export const appFactory = () => {
       const handleError = (error: Error) => {
         console.error(error);
         response.statusCode = 500;
-        response.end(`Something went wrong on ${request.method}:${request.url}\n`);
+        response.end(
+          `Something went wrong on ${request.method}:${request.url}\n`,
+        );
       };
 
       try {
