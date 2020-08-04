@@ -25,3 +25,10 @@ export interface Middleware {
   handler: Handler;
   match: Match;
 }
+
+export interface RpcMethodDefinition {
+  handler: (
+    params: Record<string, unknown>,
+    context: Context,
+  ) => Promise<unknown>;
+}
