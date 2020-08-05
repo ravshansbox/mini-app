@@ -1,6 +1,6 @@
 {
   "name": "@ravshansbox/mini-app",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Mini app library",
   "main": "dist/index.js",
   "scripts": {
