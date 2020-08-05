@@ -35,15 +35,13 @@ export const appFactory = () => {
       context.previousMatch = true;
 
       const handleError = (error: Error) => {
-        console.error(error);
         response.statusCode = 500;
-        response.end(
-          `Something went wrong on ${request.method}:${request.url}\n`,
-        );
+        response.end(error.message);
+        console.error(error);
       };
 
       try {
-        const next: Next = error => {
+        const next: Next = (error) => {
           if (error) {
             handleError(error);
           } else {

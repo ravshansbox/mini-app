@@ -3,7 +3,7 @@ import { IncomingMessage } from 'http';
 export const parseBody = (request: IncomingMessage) => {
   return new Promise<Buffer>((resolve, reject) => {
     const chunks = [];
-    request.on('data', chunk => {
+    request.on('data', (chunk) => {
       chunks.push(chunk);
     });
     request.on('end', () => {
