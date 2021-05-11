@@ -22,12 +22,12 @@
   },
   "homepage": "https://github.com/ravshansbox/mini-app#readme",
   "devDependencies": {
-    "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.37",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^14.14.44",
     "jest": "^26.6.3",
-    "prettier": "^2.2.1",
-    "ts-jest": "^26.5.4",
-    "typescript": "^4.2.3"
+    "prettier": "^2.3.0",
+    "ts-jest": "^26.5.6",
+    "typescript": "^4.2.4"
   },
   "files": [
     "dist/**/*"
@@ -39,5 +39,6 @@
   "prettier": {
     "singleQuote": true,
     "trailingComma": "all"
-  }
+  },
+  "dependencies": {}
 }
