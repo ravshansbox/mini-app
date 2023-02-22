@@ -1,7 +1,7 @@
 import { type IncomingMessage } from 'http';
 
 export const collectChunks = (request: IncomingMessage) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<Buffer>((resolve, reject) => {
     const chunks: Buffer[] = [];
     request.on('data', (chunk) => {
       chunks.push(chunk);
