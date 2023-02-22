@@ -1,34 +1,29 @@
-import { IncomingMessage, ServerResponse } from 'http';
-import { UrlWithParsedQuery } from 'url';
+import { type IncomingMessage, type ServerResponse } from 'http';
+import { type MatchFunction } from 'path-to-regexp';
 
-export interface Hash<T = any> {
-  [key: string]: T;
-}
+export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export interface Context extends Hash {
-  previousMatch: boolean;
-  url: UrlWithParsedQuery;
-}
+type HandlerParams = {
+  request: IncomingMessage;
+  response: ServerResponse;
+  pathParams: Record<string, string>;
+  searchParams: URLSearchParams;
+};
 
-export type Next = (error?: Error) => void;
+export type Handler = (params: HandlerParams) => void | Promise<void>;
 
-export type Handler<T = void> = (
-  request: IncomingMessage,
-  response: ServerResponse,
-  context: Context,
-  next: Next,
-) => T;
-
-export type Match = (request: IncomingMessage, context: Context) => boolean;
-
-export interface Middleware {
+export type Route = {
+  method: Method;
+  path: string;
   handler: Handler;
-  match: Match;
-}
+};
 
-export interface RpcMethodDefinition {
-  handler: (
-    params: Record<string, unknown>,
-    context: Context,
-  ) => Promise<unknown>;
+export type RouteWithMatch = Route & {
+  match: MatchFunction<Record<string, string>> | null;
+};
+
+export class HttpError extends Error {
+  constructor(public readonly details: any, public readonly statusCode: number) {
+    super(typeof details === 'string' ? details : undefined);
+  }
 }

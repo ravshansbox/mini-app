@@ -1,30 +1,42 @@
 # Mini app
+
 ## Usage examples
+
 ```
-import { createServer } from 'http';
-import { appFactory } from '@ravshansbox/mini-app';
 
-const app = appFactory();
+import { createServer } from 'node:http';
+import { createRequestListener, createRouter, sendJson } from '@ravshansbox/mini-app';
 
-app.registerMiddleware(
-  ({ method, url }) => {
-    return method === 'GET' && url.startsWith('/about');
-  },
-  (_request, response) => {
-    response.end(`mini app\n`);
-  },
-);
+const app = createRouter();
 
-app.registerMiddleware(
-  ({ method, url }) => {
-    return method === 'GET' && url.startsWith('/version');
-  },
-  (_request, response) => {
-    response.end(`0.0.1\n`);
-  },
-);
+const infoRouter = createRouter();
 
-createServer(app.requestListener).listen(8080, () => {
-  process.stdout.write('Listening on port 8080\n');
+infoRouter.addRoute({
+  method: 'GET',
+  path: '/about',
+  handler: ({ response }) => {
+    sendJson(response, { message: 'Mini app' }, 200);
+  },
 });
+
+infoRouter.addRoute({
+  method: 'GET',
+  path: '/version',
+  handler: ({ response }) => {
+    sendJson(response, { message: '0.0.1' }, 200);
+  },
+});
+
+app.addRoutes('/info', infoRouter.routes);
+
+const server = createServer();
+
+server.on('request', createRequestListener(app.routes));
+
+server.on('listening', () => {
+  console.info('Listening on', server.address());
+});
+
+server.listen(8080);
+
 ```

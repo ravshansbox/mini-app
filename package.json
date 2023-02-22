@@ -1,44 +1,34 @@
 {
   "name": "@ravshansbox/mini-app",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Mini app library",
-  "main": "dist/index.js",
-  "scripts": {
-    "prepublishOnly": "tsc",
-    "test": "jest"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ravshansbox/mini-app.git"
-  },
+  "author": "Ravshan Samandarov",
+  "license": "MIT",
+  "homepage": "https://github.com/ravshansbox/mini-app#readme",
   "keywords": [
     "mini",
     "app"
   ],
-  "author": "Ravshan Samandarov",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ravshansbox/mini-app/issues"
-  },
-  "homepage": "https://github.com/ravshansbox/mini-app#readme",
-  "devDependencies": {
-    "@types/jest": "^26.0.23",
-    "@types/node": "^14.17.1",
-    "jest": "^27.0.3",
-    "prettier": "^2.3.0",
-    "ts-jest": "^27.0.1",
-    "typescript": "^4.3.2"
-  },
   "files": [
     "dist/**/*"
   ],
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
+  "main": "dist/index.js",
+  "scripts": {
+    "prepublishOnly": "tsc --outDir dist",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.0",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5",
+    "vitest": "^0.28.5"
   },
   "prettier": {
+    "printWidth": 100,
     "singleQuote": true,
     "trailingComma": "all"
   },
-  "dependencies": {}
+  "dependencies": {
+    "path-to-regexp": "^6.2.1"
+  }
 }

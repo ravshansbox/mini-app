@@ -1,8 +1,8 @@
-import { IncomingMessage } from 'http';
+import { type IncomingMessage } from 'http';
 
-export const parseBody = (request: IncomingMessage) => {
-  return new Promise<Buffer>((resolve, reject) => {
-    const chunks = [];
+export const collectChunks = (request: IncomingMessage) => {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
     request.on('data', (chunk) => {
       chunks.push(chunk);
     });
