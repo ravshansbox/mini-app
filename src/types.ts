@@ -27,3 +27,11 @@ export class HttpError extends Error {
     super(typeof details === 'string' ? details : undefined);
   }
 }
+
+export const HEADERS = {
+  CONTENT_TYPE: 'content-type',
+} as const;
+
+export const CONTENT_TYPES = {
+  JSON: 'application/json',
+} as const;
