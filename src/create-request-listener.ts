@@ -7,13 +7,13 @@ export const createRequestListener = (routesWithMatch: RouteWithMatch[]): Reques
     const { pathname, searchParams } = new URL(request.url ?? '', `http://${request.headers.host}`);
     let matched = false;
     for (const { method, match, handler } of routesWithMatch) {
-      const isMethodOK = method === null || method === request.method;
+      const isMethodOK = method === undefined || method === request.method;
       if (!isMethodOK) {
         continue;
       }
       let isPathOK = false;
       let pathParams: Record<string, string> = {};
-      if (match === null) {
+      if (match === undefined) {
         isPathOK = true;
       } else {
         const matchResult = match(pathname);

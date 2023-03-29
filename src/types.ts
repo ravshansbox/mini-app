@@ -13,13 +13,13 @@ type HandlerParams = {
 export type Handler = (params: HandlerParams) => void | Promise<void>;
 
 export type Route = {
-  method: Method;
-  path: string;
+  method?: Method;
+  path?: string;
   handler: Handler;
 };
 
 export type RouteWithMatch = Route & {
-  match: MatchFunction<Record<string, string>> | null;
+  match?: MatchFunction<Record<string, string>>;
 };
 
 export class HttpError extends Error {
