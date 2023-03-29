@@ -1,4 +1,4 @@
-import { type ServerResponse } from 'http';
+import { type ServerResponse } from 'node:http';
 import { CONTENT_TYPES, HEADERS } from './types';
 
 export const sendJson = (response: ServerResponse, payload: any, statusCode: number) => {

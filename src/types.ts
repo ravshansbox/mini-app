@@ -1,4 +1,4 @@
-import { type IncomingMessage, type ServerResponse } from 'http';
+import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type MatchFunction } from 'path-to-regexp';
 
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -8,6 +8,7 @@ type HandlerParams = {
   response: ServerResponse;
   pathParams: Record<string, string>;
   searchParams: URLSearchParams;
+  next: () => Promise<void>;
 };
 
 export type Handler = (params: HandlerParams) => void | Promise<void>;

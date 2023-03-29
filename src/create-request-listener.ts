@@ -6,30 +6,36 @@ export const createRequestListener = (routesWithMatch: RouteWithMatch[]): Reques
   return async (request, response) => {
     const { pathname, searchParams } = new URL(request.url ?? '', `http://${request.headers.host}`);
     let matched = false;
-    for (const { method, match, handler } of routesWithMatch) {
-      const isMethodOK = method === undefined || method === request.method;
-      if (!isMethodOK) {
-        continue;
+    const processRoute = async (routeIndex: number) => {
+      if (routeIndex > routesWithMatch.length - 1) {
+        return;
       }
-      let isPathOK = false;
+      const route = routesWithMatch[routeIndex];
+      const { method, match, handler } = route;
+      if (method !== undefined && method !== request.method) {
+        return;
+      }
       let pathParams: Record<string, string> = {};
-      if (match === undefined) {
-        isPathOK = true;
-      } else {
+      if (match !== undefined) {
         const matchResult = match(pathname);
-        if (matchResult !== false) {
-          isPathOK = true;
-          pathParams = matchResult.params;
+        if (matchResult === false) {
+          return;
         }
-      }
-      if (!isPathOK) {
-        continue;
+        pathParams = matchResult.params;
       }
       matched = true;
+      let nextIsCalled = false;
+      const next = () => {
+        nextIsCalled = true;
+        return processRoute(routeIndex + 1);
+      };
       try {
-        const result = handler({ request, response, pathParams, searchParams });
+        const result = handler({ request, response, pathParams, searchParams, next });
         if (result instanceof Promise) {
           await result;
+        }
+        if (!nextIsCalled) {
+          await next();
         }
       } catch (error) {
         let statusCode = 500;
@@ -44,6 +50,9 @@ export const createRequestListener = (routesWithMatch: RouteWithMatch[]): Reques
         sendJson(response, { message }, statusCode);
         console.error(error);
       }
+    };
+    for (let routeIndex = 0; routeIndex < routesWithMatch.length; routeIndex++) {
+      await processRoute(routeIndex);
     }
     if (!matched) {
       sendJson(response, { message: `No route for ${request.method} ${pathname}` }, 404);
