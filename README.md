@@ -7,10 +7,7 @@
 import { createServer } from 'node:http';
 import { createRequestListener, createRouter, sendJson } from '@ravshansbox/mini-app';
 
-const app = createRouter();
-
 const infoRouter = createRouter();
-
 infoRouter.addRoute({
   method: 'GET',
   path: '/about',
@@ -19,24 +16,37 @@ infoRouter.addRoute({
   },
 });
 
-infoRouter.addRoute({
+const testRouter = createRouter();
+testRouter.addRoute({
   method: 'GET',
-  path: '/version',
-  handler: ({ response }) => {
-    sendJson(response, { message: '0.0.1' }, 200);
+  path: '/:id',
+  handler: ({ pathParams, searchParams, response }) => {
+    sendJson(response, { pathParams, searchParams }, 200);
   },
 });
 
+const app = createRouter();
 app.addRoutes('/info', infoRouter.routes);
+app.addRoutes('/test', testRouter.routes);
 
 const server = createServer();
 
 server.on('request', createRequestListener(app.routes));
 
-server.on('listening', () => {
-  console.info('Listening on', server.address());
+listen(server, 8080).then((addressInfo) => {
+  console.info('Listening on', addressInfo);
 });
 
-server.listen(8080);
+```
 
+Execute
+
+```
+curl "localhost:8080/info/about"
+```
+
+and
+
+```
+curl "localhost:8080/test/123?q=456"
 ```

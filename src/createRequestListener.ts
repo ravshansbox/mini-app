@@ -1,5 +1,5 @@
 import { type RequestListener } from 'node:http';
-import { sendJson } from './send-json';
+import { sendJson } from './sendJson';
 import { HttpError, type RouteWithMatch } from './types';
 
 export const createRequestListener = (routesWithMatch: RouteWithMatch[]): RequestListener => {

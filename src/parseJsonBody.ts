@@ -1,5 +1,5 @@
 import { type IncomingMessage } from 'node:http';
-import { collectChunks } from './collect-chunks';
+import { collectChunks } from './collectChunks';
 import { CONTENT_TYPES, HEADERS } from './types';
 
 export const parseJsonBody = async (request: IncomingMessage) => {
