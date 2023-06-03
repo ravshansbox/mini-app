@@ -5,7 +5,7 @@
 ```
 
 import { createServer } from 'node:http';
-import { createRequestListener, createRouter, sendJson } from '@ravshansbox/mini-app';
+import { createRequestListener, createRouter, listen, sendJson } from '@ravshansbox/mini-app';
 
 const infoRouter = createRouter();
 infoRouter.addRoute({
