@@ -1,5 +1,5 @@
 import { match as createMatch } from 'path-to-regexp';
-import { Handler, type Route, type RouteWithMatch } from './types';
+import { type Handler, type Route, type RouteWithMatch } from './types';
 
 export const createRouter = () => {
   const routesWithMatch: RouteWithMatch[] = [];
