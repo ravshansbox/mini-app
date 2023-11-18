@@ -1,5 +1,5 @@
 import { match as createMatch } from 'path-to-regexp';
-import { type Route, type RouteWithMatch } from './types';
+import { Handler, type Route, type RouteWithMatch } from './types';
 
 export const createRouter = () => {
   const routesWithMatch: RouteWithMatch[] = [];
@@ -9,17 +9,15 @@ export const createRouter = () => {
     routesWithMatch.push({ method, path, match, handler });
   };
 
-  const addRoutes = (basePath: string, routes: Route[]) => {
-    for (const { method, path, handler } of routes) {
-      const fullPath = `${basePath}${path}`;
-      const match = path === undefined ? undefined : createMatch<Record<string, string>>(fullPath);
-      routesWithMatch.push({ method, path: fullPath, match, handler });
-    }
-  };
-
   return {
     routes: routesWithMatch,
     addRoute,
-    addRoutes,
+    addRoutes: (basePath: string, routes: Route[]) => {
+      routes.map((route) => ({ ...route, path: `${basePath}${route.path}` })).forEach(addRoute);
+    },
+    get: (path: string, handler: Handler) => addRoute({ method: 'GET', path, handler }),
+    post: (path: string, handler: Handler) => addRoute({ method: 'POST', path, handler }),
+    put: (path: string, handler: Handler) => addRoute({ method: 'PUT', path, handler }),
+    delete: (path: string, handler: Handler) => addRoute({ method: 'DELETE', path, handler }),
   };
 };
