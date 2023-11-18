@@ -8,21 +8,13 @@ import { createServer } from 'node:http';
 import { createRequestListener, createRouter, listen, sendJson } from '@ravshansbox/mini-app';
 
 const infoRouter = createRouter();
-infoRouter.addRoute({
-  method: 'GET',
-  path: '/about',
-  handler: ({ response }) => {
-    sendJson(response, { message: 'Mini app' }, 200);
-  },
+infoRouter.get('/about', ({ response }) => {
+  sendJson(response, { message: 'Mini app' }, 200);
 });
 
 const testRouter = createRouter();
-testRouter.addRoute({
-  method: 'GET',
-  path: '/:id',
-  handler: ({ pathParams, searchParams, response }) => {
-    sendJson(response, { pathParams, searchParams }, 200);
-  },
+testRouter.get('/:id', ({ pathParams, searchParams, response }) => {
+  sendJson(response, { pathParams, searchParams }, 200);
 });
 
 const app = createRouter();
@@ -30,12 +22,10 @@ app.addRoutes('/info', infoRouter.routes);
 app.addRoutes('/test', testRouter.routes);
 
 const server = createServer();
-
 server.on('request', createRequestListener(app.routes));
+const addressInfo = await listen(server, 8080);
 
-listen(server, 8080).then((addressInfo) => {
-  console.info('Listening on', addressInfo);
-});
+console.info('Listening on', addressInfo);
 
 ```
 
