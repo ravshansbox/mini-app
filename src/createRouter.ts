@@ -11,13 +11,29 @@ export const createRouter = () => {
 
   return {
     routes: routesWithMatch,
-    addRoute,
+    addRoute: (route: Route) => {
+      addRoute(route);
+      return this;
+    },
     addRoutes: (basePath: string, routes: Route[]) => {
       routes.map((route) => ({ ...route, path: `${basePath}${route.path}` })).forEach(addRoute);
+      return this;
     },
-    get: (path: string, handler: Handler) => addRoute({ method: 'GET', path, handler }),
-    post: (path: string, handler: Handler) => addRoute({ method: 'POST', path, handler }),
-    put: (path: string, handler: Handler) => addRoute({ method: 'PUT', path, handler }),
-    delete: (path: string, handler: Handler) => addRoute({ method: 'DELETE', path, handler }),
+    get: (path: string, handler: Handler) => {
+      addRoute({ method: 'GET', path, handler });
+      return this;
+    },
+    post: (path: string, handler: Handler) => {
+      addRoute({ method: 'POST', path, handler });
+      return this;
+    },
+    put: (path: string, handler: Handler) => {
+      addRoute({ method: 'PUT', path, handler });
+      return this;
+    },
+    delete: (path: string, handler: Handler) => {
+      addRoute({ method: 'DELETE', path, handler });
+      return this;
+    },
   };
 };
