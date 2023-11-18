@@ -24,7 +24,10 @@ export type RouteWithMatch = Route & {
 };
 
 export class HttpError extends Error {
-  constructor(public readonly details: any, public readonly statusCode: number) {
+  constructor(
+    public readonly details: unknown,
+    public readonly statusCode: number,
+  ) {
     super(typeof details === 'string' ? details : undefined);
   }
 }

@@ -45,7 +45,9 @@ export const createRequestListener = (routesWithMatch: RouteWithMatch[]): Reques
         }
         if (error instanceof HttpError) {
           statusCode = error.statusCode;
-          message = error.details;
+          if (typeof error.details === 'string') {
+            message = error.details;
+          }
         }
         sendJson(response, { message }, statusCode);
         console.error(error);
