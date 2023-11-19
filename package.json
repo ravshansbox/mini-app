@@ -38,6 +38,9 @@
     "git": {
       "changelog": false,
       "tag": false
+    },
+    "npm": {
+      "publish": true
     }
   }
 }
