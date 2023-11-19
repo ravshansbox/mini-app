@@ -35,6 +35,7 @@
   },
   "release-it": {
     "git": {
+      "changelog": false,
       "commit": true,
       "push": true,
       "tag": false
