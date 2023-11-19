@@ -15,7 +15,7 @@
   "main": "dist/index.js",
   "scripts": {
     "prepublishOnly": "tsc --outDir dist",
-    "release": "release-it --only-version",
+    "release": "release-it --ci",
     "test": "vitest run"
   },
   "dependencies": {
