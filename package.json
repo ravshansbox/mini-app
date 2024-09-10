@@ -19,7 +19,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "path-to-regexp": "^6.2.1"
+    "path-to-regexp": "^8.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.9.1",
